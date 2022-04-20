@@ -223,7 +223,8 @@ mysql> show tables;
 
 `AUTHOR: DOAN VAN PHUC`
 
-
+### REFERENCE:
+https://www.tecmint.com/mariadb-master-slave-replication-on-centos-rhel-debian/
 
 
 

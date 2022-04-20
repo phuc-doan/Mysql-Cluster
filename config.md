@@ -7,7 +7,7 @@
 
 - Trên ALL node cài Mysql/Mariadb (Nếu lab thì nên dùng mariadb vì password ko require theo tiêu chuẩn, Nếu mô hình thực thì chọn mysql vì bảo mật hơn - **`ý kiến cá nhân`**)
 
- ## Step1: Cấu hình replication MariaDB Master/Master
+ ## Step1: Cấu hình replication MariaDB Master/slave
 
 - Cài đặt MariaDB
 
@@ -35,6 +35,7 @@ firewall-cmd --reload
 - Bật Binary Logging
 
 ## Step2: Chỉnh cấu hình mariadb trong /etc/my.cnf trong 2 node
+## Với node Master:
 
 
 - Chỉnh conf của mariadb trên Node 1 và Node 2 để kích hoạt binary logging (binary logging có thể được coi là log của tất cả các câu lệnh SQL mà nó nhận được)
@@ -104,6 +105,56 @@ scp replication_database.sql 192.168.252.151:/opt
 -   mysql> show master status;
 
 ```
+
+
+## Trên Slave server:
+
+### Step1: Cấu hình file my.cnf:
+
+```
+vim /etc/my.cnf
+```
+
+- Thêm 1 vài dòng sau:
+```
+
+server-id=2 
+relay-log=/var/log/mysql/mysql-relay-bin.log 
+binlog_do_db=PHUCDOAN
+```
+
+- Trong đó:
+
+- **relay-log** là nơi ghi lại thông tin dữ liệu bị thay đổi được lấy từ Master server.
+
+### Step2: Khởi động lại mysql để nhận cấu hình
+
+```
+systemctl restart mariadb
+```
+
+
+- Tạo database và đồng bộ dữ liệu với database của Master server
+**Tên DB phải giống với DB trên Master**
+
+```
+mysql> CREATE DATABASE PHUCDOAN;
+
+mysql -u root -p PHUCDOAN < /opt/PHUCDOAN.sql
+```
+
+- cấu hình replication trên slave bằng câu lệnh trong mysql như sau:
+
+```
+mysql> CHANGE MASTER TO MASTER_HOST='192.168.252.152',MASTER_USER='mysql', MASTER_PASSWORD='mysql', MASTER_LOG_FILE='mysql-bin.000004', MASTER_LOG_POS= 778;
+```
+
+### Step3: Start server Slave:
+```
+mysql> start slave;
+```
+
+### Step4: Test thôi :v
 
 
 

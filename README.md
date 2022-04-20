@@ -75,3 +75,6 @@
 
 
 `*AUTHOR: ĐOÀN VĂN PHÚC*`
+
+
+*Reference: https://hevodata.com/learn/mysql-master-slave-replication/*

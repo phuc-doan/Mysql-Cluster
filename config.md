@@ -101,6 +101,14 @@ scp replication_database.sql 192.168.252.151:/opt
 ```
 
 - Lấy giá trị Position - giá trị này sẽ được Slave sử dụng để xác định thời điểm đồng bộ dữ liệu với Master.
+
+
+
+
+![image](https://user-images.githubusercontent.com/83824403/164179177-cdf83c69-aaf9-4f66-bbe4-9a5833da01ca.png)
+
+
+
 ```
 -   mysql> show master status;
 
@@ -110,6 +118,11 @@ scp replication_database.sql 192.168.252.151:/opt
 ## Trên Slave server:
 
 ### Step1: Cấu hình file my.cnf:
+
+![image](https://user-images.githubusercontent.com/83824403/164178817-3b8404bd-708d-435c-b690-597fefe51ec5.png)
+
+
+
 
 ```
 vim /etc/my.cnf
@@ -146,7 +159,7 @@ mysql -u root -p PHUCDOAN < /opt/PHUCDOAN.sql
 - cấu hình replication trên slave bằng câu lệnh trong mysql như sau:
 
 ```
-mysql> CHANGE MASTER TO MASTER_HOST='192.168.252.152',MASTER_USER='mysql', MASTER_PASSWORD='mysql', MASTER_LOG_FILE='mysql-bin.000004', MASTER_LOG_POS= 778;
+mysql> CHANGE MASTER TO MASTER_HOST='192.168.252.152',MASTER_USER='mysql', MASTER_PASSWORD='mysql', MASTER_LOG_FILE='mysql-bin.000005', MASTER_LOG_POS= 245;
 ```
 
 ### Step3: Start server Slave:
@@ -161,6 +174,35 @@ mysql> start slave;
 
 
 
+- Để kiểm tra, ta thử thay đổi dữ liệu trên **Master** bằng cách tạo 1 table mới
+- Vào server Master:
+
+
+```
+mysql> use PHUCDOAN;
+
+mysql> create table test(job varchar(20), salary int(10));
+
+mysql> show tables;
+```
+
+![image](https://user-images.githubusercontent.com/83824403/164179820-dd0f0353-a6ef-4db6-8213-e0772fa4bca7.png)
+
+
+
+
+
+
+- Trên Slave server ta chạy lệnh:
+
+```
+mysql> use PHUCDOAN;
+
+mysql> show tables;
+
+```
+
+![image](https://user-images.githubusercontent.com/83824403/164179657-67ef8292-2233-4c6a-9b7e-2ad6f37c2d8b.png)
 
 
 
@@ -168,6 +210,18 @@ mysql> start slave;
 
 
 
+
+
+
+
+
+- Day la cau hinh `Master-Slave`. 
+
+
+- Ở bài bên chúng ta sẽ config `Master-Master` và thêm `Pacemaker/Corosync` để nó switch tự đông khi 1 DB down
+
+
+`AUTHOR: DOAN VAN PHUC`
 
 
 

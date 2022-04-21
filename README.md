@@ -86,3 +86,6 @@
 - https://haysharing.com/cau-hinh-mysql-replication-master-slave.html
 
 - https://cloudcraft.info/mysql-replication-master-slave/
+
+
+giai phap thay the la galera db: https://blog.cloud365.vn/linux/pacemaker-haproxy-galera/

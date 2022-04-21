@@ -12,6 +12,8 @@
 - Cài đặt MariaDB
 
 ```
+rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+rpm -Uvh https://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
 yum install -y mariadb-server mariadb
 ```
 

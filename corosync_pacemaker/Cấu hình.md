@@ -79,6 +79,92 @@ pcs cluster setup --name mysql_cluster masterdb slavedb
 
 
 
+```
+pcs cluster start --all
+```
+## Step5: Enable corosyn + pacemaker
+
+```
+# systemctl start pcsd
+# systemctl enable pcsd
+```
+
+![image](https://user-images.githubusercontent.com/83824403/164458284-3b7b28eb-c350-45ec-908e-9f094efc5cc2.png)
+
+
+
+- Check lại cluster:
+
+
+
+![image](https://user-images.githubusercontent.com/83824403/164458572-e83f880e-7c6f-47ba-adb4-334f42bfaa32.png)
+
+
+
+## Step6: Tạo vip cho cluster
+
+- ở đây mifnh để vip là `192.168.252.10`. Nói chung để ip nào cũng được miễn là ko trùng và vẫn thuộc dải 🩹
+
+
+
+```
+pcs resource create mysql_cluster ocf:heartbeat:IPaddr2 ip=192.168.252.10 cidr_netmask=24 op monitor interval=20s
+```
+
+
+
+
+![image](https://user-images.githubusercontent.com/83824403/164458682-fe5afafc-58dd-447a-b7dd-2b3023e9c9aa.png)
+
+
+## Step 7: Thêm ít thông số cấu hình thời gian check interval
+
+
+```
+pcs resource create hacluster systemd:mysql op monitor interval=10s
+```
+![image](https://user-images.githubusercontent.com/83824403/164459013-a9b791b0-5663-4752-b973-baa3e17c9440.png)
+
+
+
+
+## Step8: Start lên cho chắc :))
+
+```
+pcs cluster start
+```
+
+![image](https://user-images.githubusercontent.com/83824403/164459415-0647802d-5c53-4694-b33e-15967f060a58.png)
+
+
+
+- Cấu hình bỏ qourum...
+
+```
+[root@masterdb ~]# pcs property set stonith-enabled=false
+[root@masterdb ~]# pcs property set no-quorum-policy=ignore
+[root@masterdb ~]# pcs resource create httpd systemd:httpd op monitor interval=10s
+[root@masterdb ~]# pcs status
+```
+
+## Step9 : XOng rồi test thôi
+
+- thoát ra và test ssh vào địa chỉ VIP `192.168.252.10`
+
+![image](https://user-images.githubusercontent.com/83824403/164459816-ea5b56b5-77b0-4497-bf63-6c8168293ab8.png)
+
+- nó ra đc node master thế này là thành công!
+
+
+## Step 10: off thử node master xem pacemaker nó có auto nhảy sang slave không
+
+![image](https://user-images.githubusercontent.com/83824403/164460031-4dbb4367-681b-4e26-81b5-74b21c8b17ba.png)
+
+- Vào ssh lại, nếu nó auto nhảy sang node slave là thành công <3
+
+
+`AUTHOR: ĐOÀN VĂN PHÚC`
+
 
 
 

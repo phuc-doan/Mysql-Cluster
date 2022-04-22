@@ -1,6 +1,8 @@
 ## Bài Lab cài trên 2 server có IP lần lượt là 
-- 192.168.252.151 (slave)
-- 192.168.252.152 (master)
+- 192.168.187.130 (slave)
+- 192.168.187.128 (master)
+**`- Tí sau mình sẽ add thêm 1 node slave nữa là 192.168.187.131 (slave2)`**
+
 
 ### Let get started!
 
@@ -218,6 +220,120 @@ mysql> show tables;
 
 
 - Day la cau hinh `Master-Slave`. 
+
+
+
+
+## Phụ: Cấu hình add thêm 1 hoặc nhiều slave vào diagram
+
+### Step1: Trên node slave2 cũng tải và cài mysql/mariadb
+
+```
+rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+rpm -Uvh https://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+yum install -y mariadb-server mariadb
+```
+
+- Khởi động dịch vụ MariaDB trên mỗi node
+
+```
+systemctl start mariadb
+```
+
+- Chạy cài đặt an toàn cho mariadb
+
+```
+mysql_secure_installation
+```
+- Cấu hình tường lửa mở port 3306
+
+```
+firewall-cmd --add-port=3306/tcp --zone=public --permanent
+firewall-cmd --reload
+```
+
+
+### CHỉnh file *`etc/hosts/`* 
+
+- Ta sẽ chỉnh lại cả 3 nội dung của file hosts, nói chung nó như sau:
+
+```
+192.168.187.128 master
+192.168.187.130 slave
+192.168.187.131 slave2
+```
+
+
+
+### Chỉnh file conf mysql *`etc/my.conf`*
+
+
+```
+server-id=3
+binlog_do_db=DB2204
+binlog_do_db=DB2021
+```
+
+
+
+- Sau đó restart lại service:
+
+```
+systemctl restart mysqld
+```
+### Tạo thêm database giống trên master
+```
+create database DB2204;
+create database DB2021;
+```
+
+
+![image](https://user-images.githubusercontent.com/83824403/164593092-2e22ba15-8c98-40e0-87b3-431ed5bbb36c.png)
+
+### Change master cho slave2
+
+- ở đây theo những bước cấu hình trước thì lệnh của mình là
+
+```
+ CHANGE MASTER TO MASTER_HOST='192.168.187.128',MASTER_USER='slave', MASTER_PASSWORD='Phuc123@', MASTER_LOG_FILE='mysql-bin.000005', MASTER_LOG_POS= 2385;
+```
+![image](https://user-images.githubusercontent.com/83824403/164593245-33d628d0-3394-454c-9be1-04db511c5c34.png)
+
+
+
+
+- Post và log_file lấy ở đâu, thì là nó ở đây: "Sang master show `show master status\G;`" nó như này:
+
+![image](https://user-images.githubusercontent.com/83824403/164593514-c60c18af-1c59-498f-9ed8-386c98f3829e.png)
+
+- Cuối cùng là start kiểm tra và check status slave
+
+![image](https://user-images.githubusercontent.com/83824403/164594987-54b5a289-e3ea-49f6-a3e8-8e0cd93f496a.png)
+
+*`Xuất hiện 2 trường`*
+
+```
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+``` 
+*`là có thể tạm thời yên tâm đi test, nếu lỗi check log và kiểm tra lại`*
+
+
+
+
+### sang master vào thử 1 DB là `DB2204` và tạo 1 table mới để test
+
+![image](https://user-images.githubusercontent.com/83824403/164593626-85dde108-6058-4604-91c2-56e009483e78.png)
+
+-  và cuối cùng sang node slave và slave2 kiểm tra, nếu như 2 ảnh này là thành công:
+
+![image](https://user-images.githubusercontent.com/83824403/164594240-e38381ea-8181-4ae4-a6a7-0a81130f453d.png)
+
+
+**Slave2**
+
+![image](https://user-images.githubusercontent.com/83824403/164594524-0893f661-e915-408c-9596-174f518e354d.png)
+
 
 
 - Ở bài bên chúng ta sẽ config `Master-Master` và thêm `Pacemaker/Corosync` để nó switch tự đông khi 1 DB down

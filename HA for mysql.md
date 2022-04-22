@@ -2,6 +2,9 @@
 
 ### Mô hình lab logic :
 
+![image](https://user-images.githubusercontent.com/83824403/164588964-c4be66a6-78a8-4acd-971f-9de264c25da6.png)
+
+
 - Trên thực tế, mình chỉ cần dựng 2 máy chủ, với mỗi máy được cài đặt cả 3 dịch vụ haproxy , keepalived và mysql-server. 
 - vì haproxy được cài đặt cùng với mysql-server nên để không xảy ra conflict thì chúng ta có 2 cách xử lý như sau : **`1 - Giữ nguyên port mặc định của mysql và cho haproxy listen trên một port khác. 2 - Thay đổi port mặc định của mysql.`**
 
@@ -53,6 +56,7 @@ sudo apt-get update
 -  ( Đại khái thì thằng Slave sẽ là 1 tấm gương phản chiếu của thằng Master, Master làm gì thì Slave làm y chang thế. Để hiểu rõ hơn thì các bạn google với từ khóa replication mysql nhá)
 
 ## Và cụ thể trong bài viết này thì mình sẽ làm mô hình replication Master - Master.
+![image](https://user-images.githubusercontent.com/83824403/164589023-a6644141-2539-40c6-92b3-785dd1dc07a1.png)
 
 
 

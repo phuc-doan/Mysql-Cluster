@@ -1,6 +1,7 @@
 ## Bài Lab cài trên 2 server có IP lần lượt là 
 - 192.168.187.130 (slave)
 - 192.168.187.128 (master)
+
 **`- Tí sau mình sẽ add thêm 1 node slave nữa là 192.168.187.131 (slave2)`**
 
 

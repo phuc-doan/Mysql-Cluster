@@ -286,3 +286,4 @@ mysql> show variables like 'server_id';
 
 **Trong phần này chúng ta đã xây dựng được một loadbalancer có nhiệm vụ cân bằng tải cho các Node database. Ở phần tiếp theo của bài viết, mình sẽ tiếp tục thực hiện việc đồng bộ các node data với nhau và tích hợp luôn cả Keepalived để tăng tính chịu lỗi cho cả mô hình 😃**
 
+##### `AUTHOR: ĐOÀN VĂN PHÚC`

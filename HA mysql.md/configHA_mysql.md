@@ -316,11 +316,18 @@ mysql> show variables like 'server_id';
 
 - Đây là roundrobin nó sẽ call tuần tự sang các node db setup
 
+### Ngoài ra co the tạo 1 PC call vào `IP haproxy` cho nó màu mè, kết quả như này:
+
+
+
+![image](https://user-images.githubusercontent.com/83824403/164873127-b2245dbb-3baf-4705-b0c6-cccc12317437.png)
 
 
 #### Kết luận:
 
-**Trong phần này chúng ta đã xây dựng được một loadbalancer có nhiệm vụ cân bằng tải cho các Node database. Ở phần tiếp theo của bài viết, mình sẽ tiếp tục thực hiện việc đồng bộ các node data với nhau và tích hợp luôn cả Keepalived để tăng tính chịu lỗi cho cả mô hình 😃**
+*Trong phần này chúng ta đã xây dựng được một loadbalancer có nhiệm vụ cân bằng tải cho các Node database.*
+
+*Ở phần tiếp theo của bài viết, mình sẽ tiếp tục thực hiện việc đồng bộ các node data với nhau và tích hợp luôn cả Keepalived (2node Haproxy) để tăng tính chịu lỗi cho cả mô hình 😃*
 
 
 

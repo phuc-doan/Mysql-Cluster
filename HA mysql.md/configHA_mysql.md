@@ -22,7 +22,9 @@
 
 ```
 rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+
 rpm -Uvh https://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+
 yum install -y mariadb-server mariadb
 ```
 
@@ -72,7 +74,8 @@ mysql > Inser into mysql.user (Host,User,ssl_cipher,x509_issuer,x509_subject) va
 
 #### *Lưu ý : trường Host thì các bạn điền IP của HAproxy vào,còn user thì thích điền gì thì điền. 
 
-```Ví dụ : mysql > Inser into mysql.user (Host,User,ssl_cipher,x509_issuer,x509_subject) values ('192.168.187.133','haproxy_checkstatus','abc','abc','abc');*
+```Ví dụ : mysql > Inser into mysql.user (Host,User,ssl_cipher,x509_issuer,x509_subject) values 
+('192.168.187.133','haproxy_checkstatus','abc','abc','abc');*
 ```
 
 
@@ -122,14 +125,18 @@ mysql> select user from mysql.user;
 
 
 
-Xem server_ID đã gán
+=>> Xem server_ID đã gán
 
+
+```
 mysql> show variables like 'server_id';
 +---------------+-------+
 | Variable_name | Value |
 +---------------+-------+
 | server_id     | 1     |
 +---------------+-------+
+
+```
 
 
 ![image](https://user-images.githubusercontent.com/83824403/164869052-1b091e9c-b70d-4bda-b763-f2c776edfd4b.png)
@@ -157,43 +164,26 @@ sudo nano /etc/haproxy/haproxy.cfg Nội dung file config như sau :
 
 ```
 global
-
         log 127.0.0.1 local0 notice
-        
         user haproxy
-        
         group haproxy
-        
         maxconn 256
-        
         daemon
-        
     defaults
-    
         log global
-        
         retries 2
-       
         timeout connect 5000ms
-        
         timeout client  50000ms
-        
         timeout server  50000ms
 
     listen mysql-cluster
-    
         bind 192.168.187.133:3306
-        
         mode tcp
-        
 #        option mysql-check user haproxy_checkstatus
 
         balance roundrobin
-        
             server M1 192.168.187.134:3306 check
-            
             server M2 192.168.187.132:3306 check
-           
 
 ```
 
@@ -214,12 +204,9 @@ global
 
 ```
 listen mysql-cluster
-
-        bind 192.168.187.133:3306
-        
-        mode tcp
-        
-        #option mysql-check user haproxy_checkstatus
+        bind 192.168.187.133:3306      
+        mode tcp        
+       #option mysql-check user haproxy_checkstatus
 ```
 
 
@@ -236,10 +223,8 @@ listen mysql-cluster
 ### Tiếp theo là khai báo cân bằng tải cho các server MySQL.
 
 ```
-        balance roundrobin
-        
-            server M1 192.168.187.134:3306 check
-            
+        balance roundrobin       
+            server M1 192.168.187.134:3306 check            
             server M2 192.168.187.132:3306 check
 ```
 

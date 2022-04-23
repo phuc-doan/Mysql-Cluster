@@ -35,7 +35,13 @@ yum install -y mariadb-server mariadb
 - Tiến hành edit 2 dòng như sau :
 
 
+```
+bind_address = "192.168.187.134"
 
+server_id= 1
+```
+
+- Trông nó như này
 
 
 ![image](https://user-images.githubusercontent.com/83824403/164868465-9c359cfb-bfa1-4760-89ee-92eddffd7b2a.png)
@@ -43,7 +49,7 @@ yum install -y mariadb-server mariadb
 
 
 
-*` Thực hiện trên cả 2 máy MySQL server.`* 
+#### *` Thực hiện trên cả 2 máy MySQL server.`* 
  
  
  

@@ -1,76 +1,79 @@
 ## HA proxy là gì
 
-HAProxy (High Availability Proxy) là một công cụ mã nguồn mở ứng dụng cho giải pháp cần bằng tải TCP và HTTP. 
+- HAProxy (High Availability Proxy) là một công cụ mã nguồn mở ứng dụng cho giải pháp cần bằng tải TCP và HTTP. 
 
-Người dùng có thể sử dụng HAProxy để cải thiện suất hoàn thiện của các trang web và ứng dụng bằng cách phân tán khối lượng công việc của chúng trên nhiều máy chủ. 
+- Người dùng có thể sử dụng HAProxy để cải thiện suất hoàn thiện của các trang web và ứng dụng bằng cách phân tán khối lượng công việc của chúng trên nhiều máy chủ. 
 
-Cải thiện hiệu suất bao gồm giảm phản hồi thời gian và tăng thông lượng. 
+- Cải thiện hiệu suất bao gồm giảm phản hồi thời gian và tăng thông lượng. 
 
-HAProxy cũng được sử dụng trong các hệ thống lớn có lưu lượng truy cập cao như GitHub, Twitter, Reddit, Bitbucket, Stack Overflow,…
+- HAProxy cũng được sử dụng trong các hệ thống lớn có lưu lượng truy cập cao như GitHub, Twitter, Reddit, Bitbucket, Stack Overflow,…
 
 
 ## Feature:
 
-- HAProxy bao gồm các tính năng như:
+### HAProxy bao gồm các tính năng như:
 
-Hỗ trợ cân bằng tải ở lớp 4 và lớp 7 (tương ứng với TCP và HTTP).
+- Hỗ trợ cân bằng tải ở lớp 4 và lớp 7 (tương ứng với TCP và HTTP).
 
-Support HTTP protocol, HTTP / 2, gRPC, FastCGI.
+- Support HTTP protocol, HTTP / 2, gRPC, FastCGI.
 
-Chấm dứt SSL / TLS.
+-  SSL / TLS.
 
-Lưu trữ chứng chỉ SSL động.
+- Lưu trữ chứng chỉ SSL động.
 
-Chuyển đổi nội dung và kiểm tra.
+- Chuyển đổi nội dung và kiểm tra.
 
-Ủy quyền minh bạch.
+- Ủy quyền minh bạch.
 
-Ghi nhật ký chi tiết.
+- Ghi nhật ký chi tiết.
 
-CLI.
+- CLI.
 
-Xác thực HTTP.
+- Xác thực HTTP.
 
-Đa luồng.
+- Đa luồng.
 
-Rewrite URL.
+- Rewrite URL.
 
-Kiểm tra sức khỏe nâng cao.
+- Kiểm tra sức khỏe nâng cao.
 
-Giới hạn tần số kết nối.
+- Giới hạn tần số kết nối.
 
 
 ## Các thuật ngữ trong HAProxy
 
-- Access Control List (ACL)
+### Access Control List (ACL)
 
 
-Trong cân bằng tải, Acess Control List (ACL) được sử dụng để kiểm tra điều kiện và thực hiện một hành động (VD: chọn một server hay chặn một request) dựa trên kết quả của việc kiểm tra đó. Khi sử dụng ACL cho phép bạn tạo một môi trường có khả năng chuyển tiếp các request linh hoạt dựa trên các yếu tố khác nhau.
+- Trong cân bằng tải, Acess Control List (ACL) được sử dụng để kiểm tra điều kiện và thực hiện một hành động (VD: chọn một server hay chặn một request) dựa trên kết quả của việc kiểm tra đó. 
+- Khi sử dụng ACL cho phép bạn tạo một môi trường có khả năng chuyển tiếp các request linh hoạt dựa trên các yếu tố khác nhau.
 
-- Ví dụ một ACL:
-- 
+### Ví dụ một ACL:
+
 ```
 acl url_blog        src         /something
-Bash
+
 ```
 
-Trong đó: ACL này sử dụng cho các request có chứa /something.
+- Trong đó: ACL này sử dụng cho các request có chứa /something.
 
-- Backend
-
-
-Backend là một tập các server mà HAProxy có thể chuyển tiếp các request tới. Backend được cấu hình trong mục backend trong file configuration của HAProxy. Backend có thể cài đặt bằng cách:
-
-Đặt thuật toán cân bằng tải (round-robin, least-connection,…)
-
-Danh sách các máy chủ và port có thể nhận request từ HAProxy.
-
-Một backend có thể chứa một hoặc nhiều server, về cơ bản thì càng nhiều server thì khả năng chịu tải và performace của hệ thống càng tăng. 
-
-HAProxy cho phép một server backup chuyên dụng, được sử dụng khi các server offline.
+### Backend
 
 
-- Ví dụ về cấu hình backend:
+- Backend là một tập các server mà HAProxy có thể chuyển tiếp các request tới. Backend được cấu hình trong mục backend trong file configuration của HAProxy.
+- Backend có thể cài đặt bằng cách:
+
+
+ - Đặt thuật toán cân bằng tải (round-robin, least-connection,…)
+
+ - Danh sách các máy chủ và port có thể nhận request từ HAProxy.
+
+ - Một backend có thể chứa một hoặc nhiều server, về cơ bản thì càng nhiều server thì khả năng chịu tải và performace của hệ thống càng tăng. 
+
+ - HAProxy cho phép một server backup chuyên dụng, được sử dụng khi các server offline.
+
+
+### Ví dụ về cấu hình backend:
 
 ```
 backend web-backend
@@ -90,24 +93,24 @@ backend forum
 - Trong đó:
 
 
-Dòng blance leaseconn chỉ ra thuật toán cân bằng tải là chọn các server có ít kết nối đến nó nhất.
+ - Dòng blance leaseconn chỉ ra thuật toán cân bằng tải là chọn các server có ít kết nối đến nó nhất.
 
-Dòng mode http chỉ ra rằng các proxy sẽ chỉ cân bằng cho các kết nối tại tầng 7 của Internet Layer.
-
-
-- Frontend
+ - Dòng mode http chỉ ra rằng các proxy sẽ chỉ cân bằng cho các kết nối tại tầng 7 của Internet Layer.
 
 
-Fontend được sử dụng để định nghĩa cách mà các request điều hướng cho backend. Và được định nghĩa trong mục fontend của HAProxy configuration. Các cấu hình cho fontend gồm:
+###  Frontend
 
 
-Một địa chỉ IP và port.
+- Fontend được sử dụng để định nghĩa cách mà các request điều hướng cho backend. Và được định nghĩa trong mục fontend của HAProxy configuration. Các cấu hình cho fontend gồm:
 
-Các ACL do người dùng định nghĩa.
 
-Backend được sử dụng để nhận các request.
+ - Một địa chỉ IP và port.
 
-Ví dụ về cấu hình fontend:
+ - Các ACL do người dùng định nghĩa.
+
+ - Backend được sử dụng để nhận các request.
+
+- Ví dụ về cấu hình fontend:
 
 
 ```

@@ -1,4 +1,4 @@
-## Config HA for mysql
+# Config HA for mysql
 
 **`Bug and resolve by:`** https://stackoverflow.com/questions/62808822/2013-lost-connection-to-mysql-server-at-reading-initial-communication-packet
 

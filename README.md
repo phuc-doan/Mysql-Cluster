@@ -2,7 +2,7 @@
 
 ### - Overview:
 
-- MySQL là một quá trình cho phép dữ liệu từ một máy chủ cơ sở dữ liệu MySQL (máy chủ) được sao chép tự động sang một hoặc nhiều máy chủ cơ sở dữ liệu MySQL (máy chủ)
+- MySQL là một quá trình cho phép dữ liệu từ một Master được sao chép tự động sang một hoặc nhiều máy chủ cơ sở dữ liệu sl 
 
 
 

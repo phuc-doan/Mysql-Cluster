@@ -46,7 +46,7 @@ sudo apt-get install mysql-server        #Đặt pass gì thì nhớ nhé, coi c
 sudo apt-get update
 ```
 
-### Sau khi cài đặt và update xong xuôi, chúng ta bắt đầu config Replication cho MySQL trước và đồng thời tiến hành custom port listen của MySQL luôn thể. (ai đổi port listen trong cấu hình của Haproxy thì khỏi nhá)
+### Sau khi cài đặt và update xong xuôi, chúng ta bắt đầu config Replication cho MySQL trước và đồng thời tiến hành custom port listen của MySQL luôn thể. 
 
 ## Config Replication MySQL Master - Master
 

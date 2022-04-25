@@ -472,9 +472,9 @@ GRANT ALL PRIVILEGES ON *.* TO 'super'@'%' IDENTIFIED BY '12345' WITH GRANT OPTI
 ## Xây dựng Loadbalancer cho các server MySQL bằng HAproxy:
 
 
-- Ở bài viết trước, mình đã có hướng dẫn dựng một loadbalancer cho các server MySQL rồi. Giờ thì làm theo như vậy thôi. Link bài trước cho các bạn tham khảo https://viblo.asia/hoangminhung/posts/Az45bpeOZxY
+-  tham khảo https://viblo.asia/hoangminhung/posts/Az45bpeOZxY
 
-#### Lần lượt trên cả 2 server , mình tiến hành chỉnh sửa file config của HAproxy
+#### Lần lượt trên cả 2 server , tiến hành chỉnh sửa file config của HAproxy
 
 **sudo nano /etc/haproxy/haproxy.cfg** Mở file lên và điền nội dung vào như sau :
 

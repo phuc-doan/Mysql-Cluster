@@ -222,7 +222,12 @@ start slave;
 ```
 - show slave status;
 
+- set quyền read only cho slave, bài sau chúng ta sẽ từ HA proxy call vào các server DB, nên slave chỉ nên cho đọc.
 
+
+```
+ grant select on *.* to 'super' identified by 'Phuc123@';
+```
 
 ### Step4: Test thôi :v
 

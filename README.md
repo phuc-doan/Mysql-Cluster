@@ -2,6 +2,8 @@
 
 ### - Overview:
 
+***https://quanph82.wordpress.com/2012/06/25/nguyen-ly-va-cau-hinh-replication-trong-mysql/***
+
 - MySQL là một quá trình cho phép dữ liệu từ một Master được sao chép tự động sang một hoặc nhiều máy chủ cơ sở dữ liệu sl 
 
 
@@ -43,16 +45,6 @@
 
 
 
-
-## Chi tiết quá trình thực thi trong Replication như sau:
-
-- **Luồng Binlog dump**: Các master tạo 1 luồng và gửi nội dung binary log đến một slave khi các slave kết nối với master. Luồng này có thể được xác định trong đầu ra của query SHOW PROCESSLIST trên master như là 1 luồng Binlog Dump. Các binary log có được trên bản ghi nhị phân của master đọc các sự kiện đó và gửi đi cho slave. Ngay sau khi sự kiện được đọc, khóa được phát hành ngay cả khi sự kiện được gửi tới slave.
-
-
-- **Luồng Slave I/O**: Khi thông báo Slave được ban hành trên slave server, các slave tạo một luồng I/O, cái mà kết nối với server master và hỏi nó để nó gửi thông tin bản ghi cập nhật nó vào trong log nhị phân. Luồng slave I/O đọc sự cập nhật trên luồng Binlog Dump của master gửi và sao chép chúng vào 1 file local - file mà bao hàm cả những log trễ (Relay Log). Các trạng thái của luồng này được thể hiện như là Slave_IO_running trong output SHOW SLAVE STATUS hoặc là Slave_running trong ouput của SHOW STATUS.
-
-
-- **Luồng Slave SQL**: Các slave tạo ra một luồng SQL để đọc cái log trễ, cái này sau đó sẽ được ghi vào luồng slave I/O và thực thi các sự kiện chứa trong đó
 
 
 

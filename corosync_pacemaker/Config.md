@@ -1,4 +1,4 @@
-## Dựa trên bài config master/slave đã thực hành trước đó, Sau đây là bài add thêm feature switch tự động
+## Dựa trên bài config đã thực hành trước đó, Sau đây là bài add thêm feature switch tự động
 
 *link bài trước: https://github.com/phuc-doan/Mysql-DB-Replication-Master--Slave/blob/main/config.md*
 

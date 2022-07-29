@@ -169,7 +169,7 @@ mysql@m3 show status like 'wsrep%';
 
 ![image](https://user-images.githubusercontent.com/83824403/181483027-02a4a71a-8ee0-4558-a336-0ce81caeda33.png)
 
-### Bước 5: Thực hiện việc test DB với các node
+## Bước 5: Thực hiện việc test DB với các node
 
 - Thực hiện ghi DB vào bất kì node nào và check sync trên các node còn lại
 - Stop 1 node bất kì, vẫn tiếp tục ghi DB vào trên các node khác và bật lại => kiểm tra
@@ -183,7 +183,7 @@ mysql@m3 show status like 'wsrep%';
 
 
 
-### Bench march cho cụm M_M percona này
+## Bench march cho cụm M_M percona này
 
 - Step 1: Cài sysbench
 
@@ -208,7 +208,9 @@ mysql> SELECT host FROM mysql.user WHERE user = "phuc";
 sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  prepare
 ```
 => Việc trên là chúng ta đã insest liên tục vào db sysbench 2 table và mỗi row 2 triệu row
+
 => Quá trình trên thực hiện trên node 2 của cụm và trong lúc ghi chúng ta sẽ stop node 1 và node 3
+
 => Khi quá trình success thì bật lại 2 node để check
 
 ![image](https://user-images.githubusercontent.com/83824403/181729540-df483ea6-b08b-41e9-9bff-ab4386d48004.png)

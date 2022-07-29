@@ -53,8 +53,7 @@ wsrep_sst_auth="phuc:1"
 
 ```
 mysql@node1> CREATE USER 'phuc'@'1' IDENTIFIED BY 'passw0rd';
-mysql@node1> GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT ON *.* TO
-  'phuc'@'localhost';
+mysql@node1> GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT ON *.* TO 'phuc'@'localhost';
 mysql@node1> FLUSH PRIVILEGES;
 ```
 

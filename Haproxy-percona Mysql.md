@@ -25,7 +25,7 @@ sudo apt install percona-xtradb-cluster-57
 ```
 $ sudo service mysql stop
 ```
-Sửa file `*/etc/mysql/percona-xtradb-cluster.conf.d/wsrep.conf:*`
+Sửa file **`/etc/mysql/percona-xtradb-cluster.conf.d/wsrep.conf:`**
 
 ```
 [mysqld]

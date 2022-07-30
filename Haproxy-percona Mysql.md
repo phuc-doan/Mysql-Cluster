@@ -206,7 +206,7 @@ mysql> SELECT host FROM mysql.user WHERE user = "phuc";
 ```
 sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  prepare
 ```
-**=> Việc trên là chúng ta đã insest liên tục vào db sysbench 2 table và mỗi row 2 triệu row**
+**=> Việc trên là chúng ta đã insest liên tục vào db sysbench 2 table và mỗi table 2 triệu row**
 
 **=> Quá trình trên thực hiện trên node 2 của cụm và trong lúc ghi chúng ta sẽ stop node 1 và node 3**
 

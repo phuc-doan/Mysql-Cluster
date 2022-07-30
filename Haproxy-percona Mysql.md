@@ -232,7 +232,12 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql
 
 - Chạy xem performance đọc ghi của DB
 
-![image](https://user-images.githubusercontent.com/83824403/181867503-8ac37bbe-abdd-4bb4-9778-c38d6df13afd.png)
+```
+sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=10.5.9.170,10.5.8.249,10.5.10.214 --mysql-user=phuc --mysql-password=1 --mysql-port=3306 --max-requests=1000000  --mysql-db=sysbench --time=120 run
+```
+
+![image](https://user-images.githubusercontent.com/83824403/181867844-41ccdc4c-de65-4fa5-8f1f-34433b7c729c.png)
+
 
 
 

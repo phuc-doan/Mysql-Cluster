@@ -230,6 +230,9 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql
 ![image](https://user-images.githubusercontent.com/83824403/181866913-d484554f-35c3-4aae-874f-03eb987f340f.png)
 
 
+- Chạy xem performance đọc ghi của DB
+
+![image](https://user-images.githubusercontent.com/83824403/181867503-8ac37bbe-abdd-4bb4-9778-c38d6df13afd.png)
 
 
 

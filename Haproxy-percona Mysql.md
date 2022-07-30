@@ -225,6 +225,9 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql
 
 - **`Và cuối cùng là Node 3 cũng tương tự như vậy`**
 
+- Việc benchmark thử thực hiện 1 triệu phép tính 1+1 một lúc, kết quả mysql service cần 17.8s để thực hiện xong
+
+![image](https://user-images.githubusercontent.com/83824403/181866913-d484554f-35c3-4aae-874f-03eb987f340f.png)
 
 
 

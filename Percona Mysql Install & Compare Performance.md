@@ -12,7 +12,8 @@
 
 **[Compare Performance dựa trên thông số benchmark](#prepare)**
 
-**[Thêm tính năng LB cho cụm với Haproxy](#haproxy)
+**[Thêm tính năng LB cho cụm với Haproxy](#haproxy)**
+
 
 
 <a name="M-M"></a>

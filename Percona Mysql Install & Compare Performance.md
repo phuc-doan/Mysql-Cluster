@@ -176,7 +176,7 @@ mysql@m3 show status like 'wsrep%';
 - Stop 1 node bất kì, vẫn tiếp tục ghi DB vào trên các node khác và bật lại => kiểm tra
 - Stop 2 node và ghi liên tục vào node còn lại sau đó bật 2 node đã stop lên => kiểm tra
 
-=>> Kết quả của 3 PA trên là DB đều được sync đầy đủ ko thiếu 1 trường nào
+**`=>> Kết quả của 3 PA trên là DB đều được sync đầy đủ ko thiếu 1 trường nào`**
 
 ![image](https://user-images.githubusercontent.com/83824403/181483963-33bbc50d-e28b-4ea7-8927-64d419ad661a.png)
  
@@ -186,12 +186,12 @@ mysql@m3 show status like 'wsrep%';
 
 ## Bench march cho cụm M_M percona này
 
-**- Step 1:** Cài sysbench
+- **Step 1:** Cài sysbench
 
 ```
 apt install sysbench
 ```
-**- Step 2:** Phân quyền cho DB và host để phục vụ mục đích bench march
+- **Step 2:** Phân quyền cho DB và host để phục vụ mục đích bench march
 
 ```
 mysql> create database sysbench
@@ -203,7 +203,7 @@ mysql> SELECT host FROM mysql.user WHERE user = "phuc";
 ![image](https://user-images.githubusercontent.com/83824403/181728688-2e530aec-adb5-4c82-b9bb-e0b7b8d51158.png)
 
 
-**- Step 3:** Tiến hành bench march
+- **Step 3:** Tiến hành bench march
 
 ```
 sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  prepare

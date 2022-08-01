@@ -1,7 +1,7 @@
 ## Xây dựng Mysql Percona và haproxy cho các server MySQL với HAproxy trên Ubuntu
 
 
-## I.Xây dựng mysql Percona Mô hình Master-Master-Master (M-M-M)
+## I) Xây dựng mysql Percona Mô hình Master-Master-Master (M-M-M)
 
 
 
@@ -242,7 +242,7 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 
 
-## II.Xây dựng mysql Percona Mô hình Master-Slave (M-S)
+## II) Xây dựng mysql Percona Mô hình Master-Slave (M-S)
 ### Mô hình
 ### Bước 1: Thực hiện trên 2 node lần lượt như sau:
 

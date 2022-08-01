@@ -383,8 +383,8 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 - Kết quả của việc benmarch 2 cụm server (Master-Slave) như sau:
 - So sánh performance giữa mô hình M-M-M ở trên 
 
+![image](https://user-images.githubusercontent.com/83824403/182192380-ed5c3d61-4cd3-4caa-a9aa-933598e1ac71.png)
 
-![image](https://user-images.githubusercontent.com/83824403/182094492-ddbbed10-f5ff-4d95-af59-c49268d629c5.png)
 
 - CleanUp DB benchmark
 

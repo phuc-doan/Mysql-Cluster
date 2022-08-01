@@ -1,9 +1,9 @@
 ## Xây dựng Mysql Percona và haproxy cho các server MySQL với HAproxy trên Ubuntu
 
 
-## 1. Xây dựng mysql Percona
+## 1.Xây dựng mysql Percona Mô hình Master-Master-Master (M-M-M)
 
-## Mô hình 
+
 
 ### Bước 1: Thực hiện trên 3 node lần lượt như sau:
 
@@ -246,3 +246,126 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 https://www.percona.com/doc/percona-xtradb-cluster/5.7/howtos/haproxy.html
 
 
+## 2.Xây dựng mysql Percona Mô hình Master-Slave (M-S)
+### Mô hình
+### Bước 1: Thực hiện trên 2 node lần lượt như sau:
+
+```
+
+sudo apt update
+sudo apt install -y wget gnupg2 lsb-release curl
+wget https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+sudo dpkg -i percona-release_latest.generic_all.deb
+sudo apt update
+#sudo percona-release setup pxc80
+sudo apt install percona-xtradb-cluster-57
+```
+
+
+### Bước 2: Tạo DB, thực hiện việc connect replication
+
+#### Thực hiện trên node master
+
+- Sửa thông tin của file **` /etc/mysql/percona-xtradb-cluster.conf.d/mysqld.cnf `** như sau
+```
+[mysqld]
+server-id=1
+```
+
+- Tạo user phục vụ việc replication
+
+```
+CREATE USER 'slave'@'10.5.9.106' IDENTIFIED BY '1';
+
+GRANT REPLICATION SLAVE ON *.* TO slave IDENTIFIED BY '1' WITH GRANT OPTION;
+
+flush privileges;
+```
+- show master status
+
+![image](https://user-images.githubusercontent.com/83824403/182075211-6917ecef-330e-4277-b3eb-2390101f95ca.png)
+
+
+
+#### Thực hiện trên node slave
+
+- Sửa thông tin của file **` /etc/mysql/percona-xtradb-cluster.conf.d/mysqld.cnf `** như sau
+```
+[mysqld]
+server-id=2
+```
+
+- Thực hiện việc kết nối với master
+
+```
+mysql> stop slave;
+mysql> CHANGE MASTER TO MASTER_HOST='10.5.9.106',MASTER_USER='slave', MASTER_PASSWORD='1', MASTER_LOG_FILE='m-bin.000003', MASTER_LOG_POS= 360;
+mysql> start slave;
+mysql> show slave status\G;
+```
+
+![image](https://user-images.githubusercontent.com/83824403/182093019-527517c1-1392-4ea6-8dce-1ccd4c843998.png)
+
+- Khéo xuống dưới sẽ có state như sau
+```
+Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+```
+
+
+### Buớc 3: Tạo DB, test việc replication của DB
+
+- Trên master
+
+```
+mysql> create database PHUCDV;
+mysql> use PHUCDV;
+mysql> create table thong_tin;
+mysql> create table thong_tin( ten varchar (10), quequan varchar(20), tuoi int(3), hocvan varchar(30);
+mysql> insert into thong_tin values("phuc","hy","22","dh");
+
+```
+- Sang node slave xem thử
+
+```
+mysql> describe thong_tin;
+mysql> select * from thong_tin;
+```
+
+![image](https://user-images.githubusercontent.com/83824403/182094244-73bdd4c9-c459-41e5-8173-32d418d31de2.png)
+
+- Như vậy là quá trình replication hoàn thành
+
+### Bước 4: Tiến hành Benchmark
+
+- Node master
+
+#### Step 1: Cài sysbench
+```
+apt install sysbench
+```
+#### Step 2: Phân quyền cho DB và host để phục vụ mục đích bench march
+
+```
+mysql> create database sysbench
+mysql> GRANT ALL ON sysbench* to 'phuc'@'10.5.9.106' IDENTIFIED BY '1';
+mysql> FLUSH PRIVILEGES;
+mysql> SELECT host FROM mysql.user WHERE user = "phuc";
+```
+#### Step 3: Tiến hành bench march
+```
+sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  prepare
+```
+- Câu lệnh trên chúng ta sẽ thêm 2 table, mỗi table 2 triệu row vào db sysbench 
+
+![image](https://user-images.githubusercontent.com/83824403/182094920-8a4bcd3f-8595-4fe3-9c29-862bc5c1928a.png)
+
+- Tiến hành benchmark
+
+```
+sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=10.5.9.106,10.5.8.159 --mysql-user=phuc --mysql-password=1 --mysql-port=3306 --max-requests=1000000  --mysql-db=sysbench --time=120 run
+```
+- Kết quả của việc benmarch 2 cụm server (Master-Slave) như sau:
+- So sánh performance giữa mô hình M-M-M ở trên 
+
+
+![image](https://user-images.githubusercontent.com/83824403/182094492-ddbbed10-f5ff-4d95-af59-c49268d629c5.png)

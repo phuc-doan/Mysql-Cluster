@@ -2,15 +2,17 @@
 
  ### Mục lục
 
-**1. [Xây dựng mysql Percona M-M ](#M-M)**
+**[Xây dựng mysql Percona M-M ](#M-M)**
 
-**2. [Benchmark Performance M-M](#sysben M-M)**
+**[Benchmark Performance M-M](#sysben)**
 
-**3. [Xây dựng mysql Percona M-S](#M-S)**
+**[Xây dựng mysql Percona M-S](#M-S)**
 
-**4. [Benchmark Performance M-S](#sysben M-S)**
+**[Benchmark Performance M-S](#sysbenMS)**
 
-**5. [Compare Performance dựa trên thông số benchmark](#prepare)**
+**[Compare Performance dựa trên thông số benchmark](#prepare)**
+
+
 
 
 <a name="M-M"></a>
@@ -196,7 +198,7 @@ mysql@m3 show status like 'wsrep%';
 - DB trên 3 node đều như này
 
 
-<a name="sysben M-M"></a>
+<a name="sysben"></a>
 ## Bench march cho cụm M_M percona này
 
 - **Step 1:** Cài sysbench
@@ -258,7 +260,7 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 <a name="M-S"></a>
 ## II) Xây dựng mysql Percona Mô hình Master-Slave (M-S)
-### Mô hình
+
 ### Bước 1: Thực hiện trên 2 node lần lượt như sau:
 
 ```
@@ -347,7 +349,7 @@ mysql> select * from thong_tin;
 - Như vậy là quá trình replication hoàn thành
 
 
-<a name="sysben M-S"></a>
+<a name="sysbenMS"></a>
 ### Bước 4: Tiến hành Benchmark
 
 - Node master

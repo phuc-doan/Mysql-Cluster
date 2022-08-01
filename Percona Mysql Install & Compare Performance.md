@@ -1,4 +1,4 @@
-## Xây dựng Mysql Percona cho các server MySQL với HAproxy Ubuntu
+## Xây dựng Mysql Percona cho các server MySQL
 
  ### Mục lục
 

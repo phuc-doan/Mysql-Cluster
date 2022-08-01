@@ -241,10 +241,6 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 
 
-### Bước 6: Cài Haproxy phục vụ việc failover service mysql M-M percona
-
-https://www.percona.com/doc/percona-xtradb-cluster/5.7/howtos/haproxy.html
-
 
 ## II.Xây dựng mysql Percona Mô hình Master-Slave (M-S)
 ### Mô hình
@@ -369,3 +365,9 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 
 ![image](https://user-images.githubusercontent.com/83824403/182094492-ddbbed10-f5ff-4d95-af59-c49268d629c5.png)
+
+
+
+## III) Cài Haproxy phục vụ việc failover service mysql percona
+
+https://www.percona.com/doc/percona-xtradb-cluster/5.7/howtos/haproxy.html

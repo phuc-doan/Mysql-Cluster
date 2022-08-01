@@ -1,6 +1,19 @@
 ## Xây dựng Mysql Percona và haproxy cho các server MySQL với HAproxy trên Ubuntu
 
+ ### Mục lục
 
+**1. [Xây dựng mysql Percona M-M ](#M-M)**
+
+**2. [Benchmark Performance M-M](#sysben M-M)**
+
+**3. [Xây dựng mysql Percona M-S](#M-S)**
+
+**4. [Benchmark Performance M-S](#sysben M-S)**
+
+**5. [Compare Performance dựa trên thông số benchmark](#prepare)**
+
+
+<a name="M-M"></a>
 ## I) Xây dựng mysql Percona Mô hình Master-Master-Master (M-M-M)
 
 
@@ -183,7 +196,7 @@ mysql@m3 show status like 'wsrep%';
 - DB trên 3 node đều như này
 
 
-
+<a name="sysben M-M"></a>
 ## Bench march cho cụm M_M percona này
 
 - **Step 1:** Cài sysbench
@@ -243,7 +256,7 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 
 
-
+<a name="M-S"></a>
 ## II) Xây dựng mysql Percona Mô hình Master-Slave (M-S)
 ### Mô hình
 ### Bước 1: Thực hiện trên 2 node lần lượt như sau:
@@ -333,6 +346,8 @@ mysql> select * from thong_tin;
 
 - Như vậy là quá trình replication hoàn thành
 
+
+<a name="sysben M-S"></a>
 ### Bước 4: Tiến hành Benchmark
 
 - Node master
@@ -373,7 +388,7 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 ```
 sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  cleanup
 ```
-
+<a name="prepare"></a>
 ## So sánh tương quan việc benchmark
 
 - Transac per second cho biết bao nhiêu giao dịch hoàn thành trong 1s **`=> Càng cao càng tốt`**

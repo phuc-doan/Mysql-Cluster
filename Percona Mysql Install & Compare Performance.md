@@ -12,7 +12,7 @@
 
 **[Compare Performance dựa trên thông số benchmark](#prepare)**
 
-
+**[Thêm tính năng LB cho cụm với Haproxy](#haproxy)
 
 
 <a name="M-M"></a>
@@ -403,6 +403,9 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql
 - Tham Khảo:
 - https://blog.purestorage.com/purely-informational/how-to-benchmark-mysql-performance/
 
+
+
+<a name="haproxy"></a>
 ## III) Cài Haproxy phục vụ việc failover service mysql percona
 
 https://www.percona.com/doc/percona-xtradb-cluster/5.7/howtos/haproxy.html

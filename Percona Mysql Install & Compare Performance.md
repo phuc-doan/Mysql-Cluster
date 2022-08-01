@@ -16,7 +16,9 @@ sudo dpkg -i percona-release_latest.generic_all.deb
 sudo apt update
 #sudo percona-release setup pxc80
 sudo apt install percona-xtradb-cluster-57
+
 ```
+
 ### Bước 2: Thực hiện việc cấu hình replication
 
 - Thực hiện trên node 1:

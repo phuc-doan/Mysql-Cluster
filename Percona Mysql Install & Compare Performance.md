@@ -372,6 +372,18 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  cleanup
 ```
 
+## So sánh tương quan việc benchmark
+
+- Transac per second cho biết bao nhiêu giao dịch hoàn thành trong 1s **`=> Càng cao càng tốt`**
+- Latency là độ trễ trung bình cần thực hiện các events **`=> Càng thấp càng tốt`**
+- Threads fairness là chỉ thị số lượng events được thực thi trung bình trên mỗi luồng **`=> Càng cao càng tốt`**
+
+
+#### Từ đó ta thấy cùng 1 tài nguyên phần cứng thì mô hình M-M percona vượt trội hơn so với M-S
+
+- Tham Khảo:
+- https://blog.purestorage.com/purely-informational/how-to-benchmark-mysql-performance/
+
 ## III) Cài Haproxy phục vụ việc failover service mysql percona
 
 https://www.percona.com/doc/percona-xtradb-cluster/5.7/howtos/haproxy.html

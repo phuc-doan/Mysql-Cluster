@@ -366,7 +366,11 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 
 ![image](https://user-images.githubusercontent.com/83824403/182094492-ddbbed10-f5ff-4d95-af59-c49268d629c5.png)
 
+- CleanUp DB benchmark
 
+```
+sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql-port=3306 --mysql-user=phuc --mysql-password='1' --mysql-db=sysbench --db-driver=mysql --tables=2 --table-size=200000  cleanup
+```
 
 ## III) Cài Haproxy phục vụ việc failover service mysql percona
 

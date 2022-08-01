@@ -253,8 +253,8 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.170 --mysql
 ```
 sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=10.5.9.170,10.5.8.249,10.5.10.214 --mysql-user=phuc --mysql-password=1 --mysql-port=3306 --max-requests=1000000  --mysql-db=sysbench --time=120 run
 ```
+![image](https://user-images.githubusercontent.com/83824403/182193403-9636dc19-692b-4bf6-8753-9cb1da1fa227.png)
 
-![image](https://user-images.githubusercontent.com/83824403/181867844-41ccdc4c-de65-4fa5-8f1f-34433b7c729c.png)
 
 
 
@@ -383,7 +383,8 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --mysql-host=
 - Kết quả của việc benmarch 2 cụm server (Master-Slave) như sau:
 - So sánh performance giữa mô hình M-M-M ở trên 
 
-![image](https://user-images.githubusercontent.com/83824403/182192380-ed5c3d61-4cd3-4caa-a9aa-933598e1ac71.png)
+![image](https://user-images.githubusercontent.com/83824403/182193826-9890e664-37c9-4b08-acb2-a7502c3d4f99.png)
+
 
 
 - CleanUp DB benchmark

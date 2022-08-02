@@ -398,7 +398,7 @@ sysbench /usr/share/sysbench/oltp_read_write.lua --mysql-host=10.5.9.106 --mysql
 - Transac per second cho biết bao nhiêu giao dịch hoàn thành trong 1s **`=> Càng cao càng tốt`**
 - Latency là độ trễ trung bình cần thực hiện các events **`=> Càng thấp càng tốt`**
 - Threads fairness là chỉ thị số lượng events được thực thi trung bình trên mỗi luồng **`=> Càng cao càng tốt`**
-
+- The 95th percentile and 99th percentile values tell you the point at which 95% and 99% of your traffic is experiencing latency that is less than these values
 
 #### Từ đó ta thấy cùng 1 tài nguyên phần cứng thì mô hình M-M percona vượt trội hơn so với M-S
 

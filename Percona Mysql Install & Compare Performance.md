@@ -30,7 +30,7 @@ sudo apt install -y wget gnupg2 lsb-release curl
 wget https://repo.percona.com/apt/percona-release_latest.generic_all.deb
 sudo dpkg -i percona-release_latest.generic_all.deb
 sudo apt update
-#sudo percona-release setup pxc80
+##sudo percona-release setup pxc80
 sudo apt install percona-xtradb-cluster-57
 
 ```
@@ -67,13 +67,6 @@ wsrep_sst_auth="phuc:1"
 
 ```
 
-- Nếu chúng ta setup **`wsrep_sst_auth`** thì cần tạo DB với password đúng như vậy để phục vụ cho việc xác thực (tạo ở 1 node duy nhất):
-
-```
-mysql@node1> CREATE USER 'phuc'@'1' IDENTIFIED BY 'passw0rd';
-mysql@node1> GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT ON *.* TO 'phuc'@'localhost';
-mysql@node1> FLUSH PRIVILEGES;
-```
 
 
 
@@ -104,7 +97,7 @@ wsrep_node_name=pxc3
 - chạy lệnh sau trên **`node 1`**
 
 ```
-[root@m1 ~]# systemctl start mysql@bootstrap.service
+[root@m1 ~]# /etc/init.d/mysql bootstrap-pxc
 mysql@m1> show status like 'wsrep%';
 ```
 - Về cơ bản nó sẽ như sau:
@@ -126,6 +119,17 @@ mysql@m1> show status like 'wsrep%';
 +----------------------------+--------------------------------------+
 40 rows in set (0.01 sec)
 ```
+
+
+
+- Nếu chúng ta setup **`wsrep_sst_auth`** thì cần tạo DB với password đúng như vậy để phục vụ cho việc xác thực (tạo ở 1 node duy nhất):
+
+```
+mysql@node1> CREATE USER 'phuc'@'1' IDENTIFIED BY 'passw0rd';
+mysql@node1> GRANT RELOAD, LOCK TABLES, PROCESS, REPLICATION CLIENT ON *.* TO 'phuc'@'localhost';
+mysql@node1> FLUSH PRIVILEGES;
+```
+
 
 ### Bước 4: join 2 node còn lại (tương tự nhau)
 

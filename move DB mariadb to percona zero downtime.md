@@ -76,6 +76,7 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 ```
  Booostrap lại service
+
 /etc/init.d/mysql bootstrap-pxc
 ```
 
@@ -87,19 +88,23 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 ![image](https://user-images.githubusercontent.com/83824403/189519681-80410915-312f-4592-a5c6-649769d78b0e.png)
 
-*NOTE: Lưu ý OUTPUT lúc này
+**`NOTE: Lưu ý OUTPUT lúc này`**
 
 
 
 
 ### Bước 3: TEST
 
-- Trên node maridb lúc này ta dump và restore DB mới. Lúc này hoàn toàn vẫn chưa join node mysql vào cụm ( Mục đích là làm thay đổi DB để OUTPUT ở trên cũng thay đổi)
+- Trên node maridb lúc này ta dump và restore DB mới. 
+- Lúc này hoàn toàn vẫn chưa join node mysql vào cụm ( Mục đích là làm thay đổi DB để OUTPUT ở trên cũng thay đổi)
 
 
 ```
+
 root@mariadb:/mnt# time mysqldump -h 10.5.69.173 -u backup -p  etherpad > /mnt/db.sql
+
 MariaDB [(none)]> create database etherpad; 
+
 root@mariadb:/mnt# mysql etherpad < db.sql
 ```
 
@@ -119,19 +124,24 @@ root@mariadb:/mnt# mysql etherpad < db.sql
 STOP SLAVE;
 
 GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
+
 FLUSH PRIVILEGES;
 
 ```
 
 
-- Tạo replication, Pos và master log file ta lấy từ thời điểm trước khi tạo thêm DB
+- Tạo replication, Pos và master log file ta lấy từ thời điểm trước khi tạo thêm DB trên node mysql
 
 
 ```
 Stop slave
-CHANGE MASTER TO MASTER_HOST='10.5.9.182', MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mariadb-bin.000005', MASTER_LOG_POS=26445659
-;
+
+CHANGE MASTER TO MASTER_HOST='10.5.9.182', MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mariadb-bin.000005',
+
+MASTER_LOG_POS=26445659;
+
 start slave;
+
 Show slave status\G;
 
 ```
@@ -170,8 +180,11 @@ Show slave status\G;
 
 
 ```
+
 # mysql -B -N -h 10.5.69.173 -u backup -p -e "SELECT CONCAT('\'', user,'\'@\'', host, '\'') FROM user WHERE user != 'debian-sys-maint' AND user != 'root' AND user != ''" mysql > /mnt/mysql_all_users.txt - Dump tất cả user của cụm cũ
+
 # while read line; do mysql -B -N -h 10.5.69.173 -u backup -p -e "SHOW GRANTS FOR $line"; done < mysql_all_users.txt > mysql_all_users_sql.sql - Dump tất cả các quyền cho user ở cụm cũ
+
 # sed -i 's/$/;/' /mnt/mysql_all_users_sql.sql - Chèn dấu ; vào cuối mỗi dòng trong file User-priviledges.sql
 
 Restore User, User Priviledges cho cụm mới

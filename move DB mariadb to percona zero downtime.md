@@ -71,7 +71,7 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 ![image](https://user-images.githubusercontent.com/83824403/189520607-d23e41a0-77bc-45c8-a305-c05914275f70.png)
 
-*Tham khảo https://docs.percona.com/percona-xtradb-cluster/5.7/features/pxc-strict-mode.html
+*Tham khảo https://docs.percona.com/percona-xtradb-cluster/5.7/features/pxc-strict-mode.html*
 
 
 ```

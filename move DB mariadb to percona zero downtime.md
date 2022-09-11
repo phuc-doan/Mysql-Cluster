@@ -38,7 +38,7 @@ sudo apt install percona-xtradb-cluster-57
 ```
 
 [mysqld]
-bind-address = 10.5.9.182
+bind-address = 10.5.69.173
 server_id=1
 report_host = master
 log_bin = /var/lib/mysql/mariadb-bin
@@ -62,11 +62,11 @@ relay_log = /var/lib/mysql/relay-bin
 
 relay_log_index = /var/lib/mysql/relay-bin.index
 ```
-- Đảm bảo server_id trên **Percona.1** là 2. Con số này phải được thống nhất
+- Đảm bảo server_id trên **Percona.1 là 2**. Con số này phải được thống nhất
 
 
 
-- Chúng ta cần vào file config wsrep.conf để sửa mode ENFORCING thành PERMISSION 
+- Chúng ta cần vào file config **wsrep.conf** để sửa mode ENFORCING thành PERMISSION 
 
 
 ![image](https://user-images.githubusercontent.com/83824403/189520607-d23e41a0-77bc-45c8-a305-c05914275f70.png)
@@ -81,7 +81,9 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 
 
-### Bước 2: Dump DB từ node mariadb sang mysql. Lưu ý trước khi dump show master status trên mariadb và lưu ý OUTPUT
+### Bước 2: Dump DB từ node mariadb sang mysql
+
+- Lưu ý trước khi dump show master status trên mariadb và lưu ý OUTPUT
 
 ![image](https://user-images.githubusercontent.com/83824403/189519681-80410915-312f-4592-a5c6-649769d78b0e.png)
 
@@ -90,7 +92,9 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 
 
-### Bước 3: Để test, trên node maridb lúc này ta dump và restore DB mới. Lúc này hoàn toàn vẫn chưa join node mysql vào cụm ( Mục đích là làm thay đổi DB để OUTPUT ở trên cũng thay đổi)
+### Bước 3: TEST
+
+- Trên node maridb lúc này ta dump và restore DB mới. Lúc này hoàn toàn vẫn chưa join node mysql vào cụm ( Mục đích là làm thay đổi DB để OUTPUT ở trên cũng thay đổi)
 
 
 ```
@@ -120,7 +124,7 @@ FLUSH PRIVILEGES;
 ```
 
 
-- Tạo replication
+- Tạo replication, Pos và master log file ta lấy từ thời điểm trước khi tạo thêm DB
 
 
 ```
@@ -152,7 +156,10 @@ Show slave status\G;
 
 - Select DB đã có giống node MariaDB cũ
 
-#### Như vậy việc replicate giữa Mariadb và Mysql đã thành công
+
+- PP này giống việc Restore Point in Time của Mysql. Sau khi đã Dump ở 1 thời điểm, ta lợi dụng binlog để restore về thời điểm mới gần nhất
+
+**`Như vậy việc replicate giữa Mariadb và Mysql đã thành công`**
 #### Lúc này giả sử môi trường Production có Request write và CLUSTER A thì bên CLUSTER B vẫn synced bình thường
 
 

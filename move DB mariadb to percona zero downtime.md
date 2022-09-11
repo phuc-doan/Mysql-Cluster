@@ -103,13 +103,23 @@ relay_log_index = /var/lib/mysql/relay-bin.index
 
 root@mariadb:/mnt# time mysqldump -h 10.5.69.173 -u backup -p  etherpad > /mnt/db.sql
 
-MariaDB [(none)]> create database etherpad; 
+MariaDB [(none)]> create database etetherpad; 
 
 root@mariadb:/mnt# mysql etherpad < db.sql
 ```
 
+- DB đã có thêm etherpad
 
-**Lúc này show master status trên maridb, ta thấy OUTPUT không còn như trước
+
+
+![image](https://user-images.githubusercontent.com/83824403/189520989-15833650-3ec0-4d59-80d8-eefea4857ca7.png)
+
+
+
+
+
+
+**Lúc này show master status trên maridb, ta thấy OUTPUT không còn như trước**
 
 
 

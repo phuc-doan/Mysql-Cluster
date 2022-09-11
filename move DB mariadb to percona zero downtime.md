@@ -20,7 +20,7 @@
 ### Cluster A:
 ```
 ## install mariadb
-## import All DB test to Mariadb
+
 ```
 
 ### Cluster B:
@@ -32,7 +32,7 @@ sudo dpkg -i percona-release_latest.generic_all.deb
 sudo apt update
 
 sudo apt install percona-xtradb-cluster-57
-### Sau đó cài mô hình Percona Master Master để giống được như mô hìnhhình]
+### Sau đó cài mô hình Percona Master Master để giống được như mô hìnhh
 ```
 #### node Mariadb.IP1
 ```

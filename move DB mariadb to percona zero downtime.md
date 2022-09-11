@@ -11,8 +11,8 @@
 ![image](https://user-images.githubusercontent.com/83824403/186574476-47f3db83-07b7-4dbc-b9f7-04b1f73a6def.png)
  
  
- - Targert là join node Percona.1 vào cluster A phục vụ mục đích Dual Write, vì bản chất replication mariadb không chỉ replicate DB từ lúc Register giữa master và Slave, còn những DB trước đó thì không
- - Vậy nên ở trong bài trước, ta luôn cần Backup và import to new DB 
+ - Targert là join node Percona.1 vào cluster A 
+
 
 ### Bước 1: 
 - Cài cắm các dịch vụ, service bắt buộc
@@ -34,12 +34,7 @@ sudo apt update
 sudo apt install percona-xtradb-cluster-57
 ### Sau đó cài mô hình Percona Master Master để giống được như mô hìnhhình]
 ```
-
-### Bước 2: Join Percona.1 to Mariadb.IP1
-
-
-
-### node Mariadb.IP1
+#### node Mariadb.IP1
 ```
 
 [mysqld]
@@ -52,19 +47,8 @@ relay_log = /var/lib/mysql/relay-bin
 relay_log_index = /var/lib/mysql/relay-bin.index
 [client-server]
 ```
-- Sau đó cho phep user để replicate
-```
-STOP SLAVE;
 
-GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
-
-```
-
-
-
-
-### node Percona.1 
+#### node Percona.1 
 
 - sửa file /etc/mysql/my.cnf, thêm những dòng sau
 
@@ -75,75 +59,106 @@ report_host = master2
 log_bin = /var/lib/mysql/mariadb-bin
 log_bin_index = /var/lib/mysql/mariadb-bin.index
 relay_log = /var/lib/mysql/relay-bin
+
 relay_log_index = /var/lib/mysql/relay-bin.index
 ```
 - Đảm bảo server_id trên **Percona.1** là 2. Con số này phải được thống nhất
 
 
-- Join vào cluster M-S của mariadb
-- Chúng ta cần vào file config wsrep.conf để sửa mode ENFORCING thành PERMISSION để tránh lỗi như này
 
-![image](https://user-images.githubusercontent.com/83824403/186576662-b55d709b-50bc-41fe-a06b-8d8c5f8ec176.png)
+- Chúng ta cần vào file config wsrep.conf để sửa mode ENFORCING thành PERMISSION 
+
+
+![image](https://user-images.githubusercontent.com/83824403/189520607-d23e41a0-77bc-45c8-a305-c05914275f70.png)
+
+*Tham khảo https://docs.percona.com/percona-xtradb-cluster/5.7/features/pxc-strict-mode.html
+
 
 ```
  Booostrap lại service
 /etc/init.d/mysql bootstrap-pxc
 ```
 
-#### Restart lại service
+
+
+### Bước 2: Dump DB từ node mariadb sang mysql. Lưu ý trước khi dump show master status trên mariadb và lưu ý OUTPUT
+
+![image](https://user-images.githubusercontent.com/83824403/189519681-80410915-312f-4592-a5c6-649769d78b0e.png)
+
+*NOTE: Lưu ý OUTPUT lúc này
+
+
+
+
+### Bước 3: Để test, trên node maridb lúc này ta dump và restore DB mới. Lúc này hoàn toàn vẫn chưa join node mysql vào cụm ( Mục đích là làm thay đổi DB để OUTPUT ở trên cũng thay đổi)
+
+
+```
+root@mariadb:/mnt# time mysqldump -h 10.5.69.173 -u backup -p  etherpad > /mnt/db.sql
+MariaDB [(none)]> create database etherpad; 
+root@mariadb:/mnt# mysql etherpad < db.sql
+```
+
+
+**Lúc này show master status trên maridb, ta thấy OUTPUT không còn như trước
+
+
+
+![image](https://user-images.githubusercontent.com/83824403/189519977-675b91de-1c1b-40a8-9820-b30f93551688.png)
+
+
+### Bước 4, Join node mysql vào cụm. Tạo replication
+
+
+- Cho phep user để replicate trên node maridb
+```
+STOP SLAVE;
+
+GRANT REPLICATION SLAVE ON *.* TO 'slave_user'@'%' IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
+
+```
+
+
+- Tạo replication
 
 
 ```
 Stop slave
-CHANGE MASTER TO MASTER_HOST='10.5.9.182', MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mariadb-bin.000002', MASTER_LOG_POS=2018;
+CHANGE MASTER TO MASTER_HOST='10.5.9.182', MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mariadb-bin.000005', MASTER_LOG_POS=26445659
+;
+start slave;
 Show slave status\G;
+
 ```
+
+- OUTPUT như sau 
+
+![image](https://user-images.githubusercontent.com/83824403/189520221-5572ceb1-6058-44de-b48e-7614c0911915.png)
+
+
+
+
 
 *- Note: Phần *master_log_file* và *Master_log_pos*chúng ta lấy ở Mariadb.IP1 bằng lệnh *show master status*;*
 
 
-- Cuối cùng như sau
-![image](https://user-images.githubusercontent.com/83824403/186577379-7c419176-2d29-4a6a-9563-f4dc62d83a5c.png)
 
 ### Test:
 
-- Đứng ở Mariadb.IP1 tạo DB, table, Import vào Table đó
+- Đứng ở node mysql vừa thêm vào cụm, ta show database, lúc này đã có DB **`etherpad`** trước đõ đã ghi mới ở cụm Maridb. Describe Table trong DB này, OUTPUT như sau:
 
-```
-MariaDB [(none)]> create database PHUCDV;
-MariaDB [(none)]> use PHUCDV;
-MariaDB [PHUCDV]> create table thong_tin ( ten varchar(5), quequan varchar(20), ABC_test varchar(20));
-MariaDB [PHUCDV]> insert into thong_tin values ( 'phuc','hy','test replication mariadb to percona');
-```
-![image](https://user-images.githubusercontent.com/83824403/186578059-005ef69b-d2cb-4a25-8067-3475e6ba5858.png)
+![image](https://user-images.githubusercontent.com/83824403/189520351-745b1827-6ac2-4a1e-89dd-d0d93ff2c6d9.png)
 
-
- 
-- Sang Percona.1, show DB
-
-![image](https://user-images.githubusercontent.com/83824403/186578196-3e8d04ae-947d-429b-bc02-f3e08872b7e1.png)
-
+- Select DB đã có giống node MariaDB cũ
 
 #### Như vậy việc replicate giữa Mariadb và Mysql đã thành công
 #### Lúc này giả sử môi trường Production có Request write và CLUSTER A thì bên CLUSTER B vẫn synced bình thường
 
 
-### Bước 2: Import DB
 
-- Đứng từ Percona.1 chúng ta chạy mysqldump và trỏ đến host là Mariadb.IP1
 
-```
-  time mysqldump -h 10.5.69.173 -u backup -p  core_dashboard  --ignore-table=core_dashboard.msgrcpt --ignore-table=core_dashboard.msgs > /mnt/db-data.sql 
-
-```
-
-- Đứng trên Percona.1 chúng ta Restore chính DB cần thiết
-
-```
-mysql core_dashboard < /mnt/db-data.sql
-```
-
-- Sau khi Dump và Restore DB cần thiết, chúng ta sao lưu tiếp đến User và quyền User
+- Sau khi Dump và Restore DB cần thiết, chúng ta sao lưu tiếp đến User và quyền User 
 
 
 

@@ -168,7 +168,7 @@ Show slave status\G;
 
 
 
-### Test:
+### B5 Test:
 
 - Đứng ở node mysql vừa thêm vào cụm, ta show database, lúc này đã có DB **`etherpad`** trước đõ đã ghi mới ở cụm Maridb. Describe Table trong DB này, OUTPUT như sau:
 
@@ -177,10 +177,11 @@ Show slave status\G;
 - Select DB đã có giống node MariaDB cũ
 
 
-- PP này giống việc Restore Point in Time của Mysql. Sau khi đã Dump ở 1 thời điểm, ta lợi dụng binlog để restore về thời điểm mới gần nhất
+### PP này giống việc Restore Point in Time của Mysql. Sau khi đã Dump ở 1 thời điểm, ta lợi dụng binlog để restore về thời điểm mới gần nhất
 
 **`Như vậy việc replicate giữa Mariadb và Mysql đã thành công`**
-#### Lúc này giả sử môi trường Production có Request write và CLUSTER A thì bên CLUSTER B vẫn synced bình thường
+
+**` Lúc này giả sử môi trường Production có Request write và CLUSTER A thì bên CLUSTER B vẫn synced bình thường`**
 
 
 
@@ -191,17 +192,21 @@ Show slave status\G;
 
 ```
 
-mysql -B -N -h 10.5.69.173 -u backup -p -e "SELECT CONCAT('\'', user,'\'@\'', host, '\'') FROM user WHERE user != 'debian-sys-maint' AND user != 'root' AND user != ''" mysql > /mnt/mysql_all_users.txt - Dump tất cả user của cụm cũ
+$ mysql -B -N -h 10.5.9.182 -u backup -p -e "SELECT CONCAT('\'', user,'\'@\'', host, '\'') FROM user WHERE user != 'debian-sys-maint' AND user != 'root' AND user != ''" mysql > /mnt/mysql_all_users.txt 
+- Dump tất cả user của cụm cũ
 
- while read line; do mysql -B -N -h 10.5.69.173 -u backup -p -e "SHOW GRANTS FOR $line"; done < mysql_all_users.txt > mysql_all_users_sql.sql - Dump tất cả các quyền cho user ở cụm cũ
+$ while read line; do mysql -B -N -h 10.5.9.182 -u backup -p -e "SHOW GRANTS FOR $line"; done < mysql_all_users.txt > mysql_all_users_sql.sql 
+- Dump tất cả các quyền cho user ở cụm cũ
 
- sed -i 's/$/;/' /mnt/mysql_all_users_sql.sql - Chèn dấu ; vào cuối mỗi dòng trong file User-priviledges.sql
+$ sed -i 's/$/;/' /mnt/mysql_all_users_sql.sql 
+ - Chèn dấu ; vào cuối mỗi dòng trong file User-priviledges.sql
 ```
 
 - Restore User, User Priviledges cho cụm mới
 
 ```
- mysql core_dashboard < /mnt/mysql_all_users_sql.sql - Restore lại toàn bộ quyền và user cho DB mới
+ mysql core_dashboard < /mnt/mysql_all_users_sql.sql 
+ - Restore lại toàn bộ quyền và user cho DB mới
 
 
 ````
